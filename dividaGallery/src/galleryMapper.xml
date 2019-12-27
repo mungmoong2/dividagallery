@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.vo.Display_Info">
+	<resultMap id="displayInfo" type="com.my.vo.Display_Info"
+		autoMapping="true">
+		<id property="display_id" column="display_id" />
+		<association property="file_info"
+			javaType="com.my.vo.File_Info" autoMapping="true">
+			<id property="file_id" column="file_id" />
+		</association>
+	</resultMap>
+	<select id="selectAll" resultMap="displayInfo"
+		parameterType="java.lang.String">
+		SELECT d.description,
+		d.content, f.file_name,
+		f.content_type, f.save_file_name FROM display_info d JOIN
+		file_info f ON d.file_id =
+		f.file_id WHERE f.content_type=#{type}
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer"
+		parameterType="string">
+		SELECT count(*) FROM display_info d JOIN
+		file_info f ON
+		d.file_id =
+		f.file_id WHERE f.content_type=#{type}
+	</select>
+</mapper>
